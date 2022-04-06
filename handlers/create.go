@@ -16,7 +16,6 @@ func NewCreate(l *log.Logger) *Create {
 }
 
 func (c *Create) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	c.l.Println("Hello World")
 
 	d, err := ioutil.ReadAll(r.Body)
 	if err != nil {
