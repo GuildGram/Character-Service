@@ -2,14 +2,15 @@ package data
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"time"
 )
 
 type Character struct {
+	ID               int    `json:"id"`
 	CharaterName     string `json:"name"`
 	RegionServerName string `json:"region-server"`
-	ItemLevel        int    `json:"ilvl"`
 	CharacterLevel   int    `json:"characterlevel"`
 	RosterLevel      int    `json:"rosterLevel"`
 	GuildName        string `json:"guildName"`
@@ -18,6 +19,11 @@ type Character struct {
 	CreatedOn string `json:"-"`
 	UpdatedOn string `json:"-"`
 	DeletedOn string `json:"-"`
+}
+
+func (c *Character) FromJSON(r io.Reader) error {
+	e := json.NewDecoder(r)
+	return e.Decode(c)
 }
 
 type Characters []*Character
@@ -31,11 +37,42 @@ func GetCharacters() Characters {
 	return characterList
 }
 
+func UpdateCharacter(id int, c *Character) error {
+	_, pos, err := findChar(id)
+	if err != nil {
+		return err
+	}
+
+	c.ID = id
+	characterList[pos] = c
+	return err
+}
+
+var ErrCharNotFound = fmt.Errorf("Char Not found")
+
+func findChar(id int) (*Character, int, error) {
+	for i, c := range characterList {
+		if c.ID == id {
+			return c, i, nil
+		}
+	}
+	return nil, -1, ErrCharNotFound
+}
+
+func AddCharacter(c *Character) {
+	c.ID = GetNextID()
+	characterList = append(characterList, c)
+}
+
+func GetNextID() int {
+	return characterList[len(characterList)-1].ID + 1
+}
+
 var characterList = []*Character{
 	&Character{
+		ID:               1,
 		CharaterName:     "Nemoi",
 		RegionServerName: "EUC-Sceptrum",
-		ItemLevel:        1355,
 		CharacterLevel:   53,
 		RosterLevel:      68,
 		GuildName:        "FontysICT",
@@ -44,9 +81,9 @@ var characterList = []*Character{
 		UpdatedOn:        time.Now().UTC().String(),
 	},
 	&Character{
+		ID:               2,
 		CharaterName:     "Mjc",
 		RegionServerName: "EUC-Sceptrum",
-		ItemLevel:        1340,
 		CharacterLevel:   53,
 		RosterLevel:      60,
 		GuildName:        "InternsGuild",
