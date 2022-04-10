@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/GuildGram/Character-Service.git/handlers"
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -16,9 +17,27 @@ func main() {
 
 	ch := handlers.NewCharacter(l)
 
-	sm := http.NewServeMux()
-	sm.Handle("/", ch)
+	sm := mux.NewRouter()
 
+	//handle get
+	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/getAll", ch.GetCharacters)
+
+	getRouter.HandleFunc("/get{id:[0-9]+}", ch.GetCharacter)
+
+	//handle put
+	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/update{id:[0-9]+}", ch.UpdateCharacters)
+
+	//handle add
+	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/add", ch.AddCharacter)
+
+	//handle delete
+	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc("/delete{id:[0-9]+}", ch.DeleteCharacter)
+
+	//Server stuff for testing, will be deleted soon
 	s := &http.Server{
 		Addr:         ":9090",
 		Handler:      sm,

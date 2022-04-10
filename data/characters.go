@@ -33,6 +33,11 @@ func (c *Characters) ToJSON(w io.Writer) error {
 	return e.Encode(c)
 }
 
+func (c *Character) ToJSON(w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(c)
+}
+
 func GetCharacters() Characters {
 	return characterList
 }
@@ -66,6 +71,25 @@ func AddCharacter(c *Character) {
 
 func GetNextID() int {
 	return characterList[len(characterList)-1].ID + 1
+}
+
+func DeleteCharacter(id int) error {
+	_, pos, err := findChar(id)
+	if err != nil {
+		return err
+	}
+	characterList[pos] = characterList[len(characterList)-1]
+	characterList[len(characterList)-1] = nil
+	characterList = characterList[:len(characterList)-1]
+	return err
+}
+
+func GetCharacter(id int) (*Character, error) {
+	_, pos, err := findChar(id)
+	if err != nil {
+		return nil, err
+	}
+	return characterList[pos], err
 }
 
 var characterList = []*Character{

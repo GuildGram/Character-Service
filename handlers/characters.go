@@ -3,10 +3,10 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"regexp"
 	"strconv"
 
 	"github.com/GuildGram/Character-Service.git/data"
+	"github.com/gorilla/mux"
 )
 
 type Character struct {
@@ -17,48 +17,18 @@ func NewCharacter(l *log.Logger) *Character {
 	return &Character{l}
 }
 
-func (c *Character) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		c.GetCharacters(rw, r)
+func (c *Character) UpdateCharacters(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
 		return
 	}
 
-	if r.Method == http.MethodPost {
-		c.addCharacter(rw, r)
-		return
-	}
-	if r.Method == http.MethodPut {
-		reg := regexp.MustCompile(`/([0-9]+)`)
-		g := reg.FindAllStringSubmatch(r.URL.Path, -1)
-		//check if only one ID was retrieved
-		if len(g) != 1 {
-			http.Error(rw, "Invalid URI", http.StatusBadRequest)
-			return
-		}
-		//ceck if capture groups created succesfully
-		if len(g[0]) != 2 {
-			http.Error(rw, "Invalid URI", http.StatusBadRequest)
-			return
-		}
-
-		idString := g[0][1]
-		id, err := strconv.Atoi(idString)
-		if err != nil {
-			return
-		}
-
-		c.updateCharacters(id, rw, r)
-		return
-	}
-
-	//if not get then throw error
-	rw.WriteHeader(http.StatusMethodNotAllowed)
-}
-func (c *Character) updateCharacters(id int, rw http.ResponseWriter, r *http.Request) {
-	c.l.Println("HANDLE PUT CHARACTER")
+	c.l.Println("HANDLE PUT CHARACTER", id)
 
 	char := &data.Character{}
-	err := char.FromJSON(r.Body)
+	err = char.FromJSON(r.Body)
 	if err != nil {
 		http.Error(rw, "Unable to unmarshal json", http.StatusBadRequest)
 	}
@@ -81,7 +51,7 @@ func (c *Character) GetCharacters(rw http.ResponseWriter, h *http.Request) {
 	}
 }
 
-func (c *Character) addCharacter(rw http.ResponseWriter, r *http.Request) {
+func (c *Character) AddCharacter(rw http.ResponseWriter, r *http.Request) {
 	c.l.Println("HANDLE POST CHARACTER")
 
 	char := &data.Character{}
@@ -91,4 +61,37 @@ func (c *Character) addCharacter(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	data.AddCharacter(char)
+}
+
+func (c *Character) DeleteCharacter(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
+		return
+	}
+
+	c.l.Println("HANDLE DELETE CHARACTER", id)
+
+	err = data.DeleteCharacter(id)
+	if err != nil {
+		http.Error(rw, "Char not found", http.StatusInternalServerError)
+	}
+}
+
+func (c *Character) GetCharacter(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
+		return
+	}
+
+	c.l.Println("HANDLE GET 1 CHARACTER", id)
+
+	char, err2 := data.GetCharacter(id)
+	if err2 != nil {
+		http.Error(rw, "Char not found", http.StatusInternalServerError)
+	}
+	char.ToJSON(rw)
 }
