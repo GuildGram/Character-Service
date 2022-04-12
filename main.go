@@ -18,21 +18,21 @@ func main() {
 
 	//handle get
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/getAll", ch.GetCharacters)
+	getRouter.HandleFunc("/characters/getall", ch.GetCharacters)
 
-	getRouter.HandleFunc("/get{id:[0-9]+}", ch.GetCharacter)
+	getRouter.HandleFunc("/characters/get{id:[0-9]+}", ch.GetCharacter)
 
 	//handle put
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/update{id:[0-9]+}", ch.UpdateCharacters)
+	putRouter.HandleFunc("/characters/update{id:[0-9]+}", ch.UpdateCharacters)
 
 	//handle add
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/add", ch.AddCharacter)
+	postRouter.HandleFunc("/characters/add", ch.AddCharacter)
 
 	//handle delete
 	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/delete{id:[0-9]+}", ch.DeleteCharacter)
+	deleteRouter.HandleFunc("/characters/delete{id:[0-9]+}", ch.DeleteCharacter)
 
 	//Server stuff for testing, will be deleted soon
 	// s := &http.Server{
