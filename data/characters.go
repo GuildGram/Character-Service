@@ -8,7 +8,8 @@ import (
 )
 
 type Character struct {
-	ID               int    `json:"id"`
+	UserID           int    `json:"userid"`
+	Class            string `json:"class"`
 	CharaterName     string `json:"name"`
 	RegionServerName string `json:"region-server"`
 	CharacterLevel   int    `json:"characterlevel"`
@@ -95,8 +96,9 @@ func GetCharacter(id int) (*Character, error) {
 
 var characterList = []*Character{
 	&Character{
-		ID:               1,
+		UserID:           1,
 		CharaterName:     "Nemoi",
+		Class:            "Striker",
 		RegionServerName: "EUC-Sceptrum",
 		CharacterLevel:   53,
 		RosterLevel:      68,
@@ -107,8 +109,9 @@ var characterList = []*Character{
 		UpdatedOn:        time.Now().UTC().String(),
 	},
 	&Character{
-		ID:               2,
+		UserID:           2,
 		CharaterName:     "Mjc",
+		Class:            "Berserk",
 		RegionServerName: "EUC-Sceptrum",
 		CharacterLevel:   53,
 		RosterLevel:      60,
