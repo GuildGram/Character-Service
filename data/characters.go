@@ -13,6 +13,7 @@ type Character struct {
 	RegionServerName string `json:"region-server"`
 	CharacterLevel   int    `json:"characterlevel"`
 	RosterLevel      int    `json:"rosterLevel"`
+	Ilvl             int    `json:"ilvl"`
 	GuildName        string `json:"guildName"`
 	GuildRole        string `json:"guildRole"`
 	//Might delete for internal use for now
@@ -99,6 +100,7 @@ var characterList = []*Character{
 		RegionServerName: "EUC-Sceptrum",
 		CharacterLevel:   53,
 		RosterLevel:      68,
+		Ilvl:             1355,
 		GuildName:        "FontysICT",
 		GuildRole:        "Owner",
 		CreatedOn:        time.Now().UTC().String(),
@@ -110,6 +112,7 @@ var characterList = []*Character{
 		RegionServerName: "EUC-Sceptrum",
 		CharacterLevel:   53,
 		RosterLevel:      60,
+		Ilvl:             1368,
 		GuildName:        "InternsGuild",
 		GuildRole:        "Member",
 		CreatedOn:        time.Now().UTC().String(),

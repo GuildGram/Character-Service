@@ -23,6 +23,7 @@ func main() {
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/characters/getall", ch.GetCharacters)
 
+	//should change to get by name for when user services are implemented
 	getRouter.HandleFunc("/characters/get{id:[0-9]+}", ch.GetCharacter)
 
 	//handle put
