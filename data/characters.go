@@ -50,7 +50,7 @@ func UpdateCharacter(id int, c *Character) error {
 		return err
 	}
 
-	c.ID = id
+	c.UserID = id
 	characterList[pos] = c
 	return err
 }
@@ -59,7 +59,7 @@ var ErrCharNotFound = fmt.Errorf("Char Not found")
 
 func findChar(id int) (*Character, int, error) {
 	for i, c := range characterList {
-		if c.ID == id {
+		if c.UserID == id {
 			return c, i, nil
 		}
 	}
@@ -67,12 +67,12 @@ func findChar(id int) (*Character, int, error) {
 }
 
 func AddCharacter(c *Character) {
-	c.ID = GetNextID()
+	c.UserID = GetNextID()
 	characterList = append(characterList, c)
 }
 
 func GetNextID() int {
-	return characterList[len(characterList)-1].ID + 1
+	return characterList[len(characterList)-1].UserID + 1
 }
 
 func DeleteCharacter(id int) error {
