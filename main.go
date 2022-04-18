@@ -1,66 +1,70 @@
 package main
 
 import (
-	"context"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
+	// "context"
+	// "log"
+	// "net/http"
+	// "os"
+	// "os/signal"
+	// "time"
 
 	"github.com/GuildGram/Character-Service.git/handlers"
-	"github.com/gorilla/mux"
+	// "github.com/gorilla/mux"
 )
 
 func main() {
-	l := log.New(os.Stdout, "character-api", log.LstdFlags)
+	//Rabbit mq connection
+	handlers.StartMsgBrokerConnection()
 
-	ch := handlers.NewCharacter(l)
+	//old code
+	// l := log.New(os.Stdout, "character-api", log.LstdFlags)
 
-	sm := mux.NewRouter()
+	// ch := handlers.NewCharacter(l)
 
-	//handle get
-	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/characters/getall", ch.GetCharacters)
+	// sm := mux.NewRouter()
 
-	//should change to get by name for when user services are implemented
-	getRouter.HandleFunc("/characters/get{id:[0-9]+}", ch.GetCharacter)
+	// //handle get
+	// getRouter := sm.Methods(http.MethodGet).Subrouter()
+	// getRouter.HandleFunc("/characters/getall", ch.GetCharacters)
 
-	//handle put
-	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/characters/update{id:[0-9]+}", ch.UpdateCharacters)
+	// //should change to get by name for when user services are implemented
+	// getRouter.HandleFunc("/characters/get{id:[0-9]+}", ch.GetCharacter)
 
-	//handle add
-	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/characters/add", ch.AddCharacter)
+	// //handle put
+	// putRouter := sm.Methods(http.MethodPut).Subrouter()
+	// putRouter.HandleFunc("/characters/update{id:[0-9]+}", ch.UpdateCharacters)
 
-	//handle delete
-	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/characters/delete{id:[0-9]+}", ch.DeleteCharacter)
+	// //handle add
+	// postRouter := sm.Methods(http.MethodPost).Subrouter()
+	// postRouter.HandleFunc("/characters/add", ch.AddCharacter)
 
-	//Server stuff for testing, will be deleted soon
-	s := &http.Server{
-		Addr:         ":9090",
-		Handler:      sm,
-		IdleTimeout:  120 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
-	}
+	// //handle delete
+	// deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
+	// deleteRouter.HandleFunc("/characters/delete{id:[0-9]+}", ch.DeleteCharacter)
 
-	go func() {
-		err := s.ListenAndServe()
-		if err != nil {
-			l.Fatal(err)
-		}
-	}()
+	// //Server stuff for testing, will be deleted soon
+	// s := &http.Server{
+	// 	Addr:         ":9090",
+	// 	Handler:      sm,
+	// 	IdleTimeout:  120 * time.Second,
+	// 	ReadTimeout:  1 * time.Second,
+	// 	WriteTimeout: 1 * time.Second,
+	// }
 
-	sigChan := make(chan os.Signal)
-	signal.Notify(sigChan, os.Interrupt)
-	signal.Notify(sigChan, os.Kill)
+	// go func() {
+	// 	err := s.ListenAndServe()
+	// 	if err != nil {
+	// 		l.Fatal(err)
+	// 	}
+	// }()
 
-	sig := <-sigChan
-	l.Println("received kill signal, shutting down", sig)
+	// sigChan := make(chan os.Signal)
+	// signal.Notify(sigChan, os.Interrupt)
+	// signal.Notify(sigChan, os.Kill)
 
-	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	s.Shutdown(tc)
+	// sig := <-sigChan
+	// l.Println("received kill signal, shutting down", sig)
+
+	// tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	// s.Shutdown(tc)
 }
