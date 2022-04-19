@@ -13,6 +13,9 @@ import (
 )
 
 func main() {
+	go handlers.StartMsgBrokerConnection()
+
+	//old code
 	l := log.New(os.Stdout, "character-api", log.LstdFlags)
 
 	ch := handlers.NewCharacter(l)

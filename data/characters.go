@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"time"
 )
 
 type Character struct {
@@ -17,10 +16,6 @@ type Character struct {
 	Ilvl             int    `json:"ilvl"`
 	GuildName        string `json:"guildName"`
 	GuildRole        string `json:"guildRole"`
-	//Might delete for internal use for now
-	CreatedOn string `json:"-"`
-	UpdatedOn string `json:"-"`
-	DeletedOn string `json:"-"`
 }
 
 func (c *Character) FromJSON(r io.Reader) error {
@@ -45,7 +40,7 @@ func GetCharacters() Characters {
 }
 
 func UpdateCharacter(id int, c *Character) error {
-	_, pos, err := findChar(id)
+	_, pos, err := FindChar(id)
 	if err != nil {
 		return err
 	}
@@ -57,7 +52,7 @@ func UpdateCharacter(id int, c *Character) error {
 
 var ErrCharNotFound = fmt.Errorf("Char Not found")
 
-func findChar(id int) (*Character, int, error) {
+func FindChar(id int) (*Character, int, error) {
 	for i, c := range characterList {
 		if c.UserID == id {
 			return c, i, nil
@@ -76,7 +71,7 @@ func GetNextID() int {
 }
 
 func DeleteCharacter(id int) error {
-	_, pos, err := findChar(id)
+	_, pos, err := FindChar(id)
 	if err != nil {
 		return err
 	}
@@ -87,7 +82,7 @@ func DeleteCharacter(id int) error {
 }
 
 func GetCharacter(id int) (*Character, error) {
-	_, pos, err := findChar(id)
+	_, pos, err := FindChar(id)
 	if err != nil {
 		return nil, err
 	}
@@ -105,8 +100,6 @@ var characterList = []*Character{
 		Ilvl:             1355,
 		GuildName:        "FontysICT",
 		GuildRole:        "Owner",
-		CreatedOn:        time.Now().UTC().String(),
-		UpdatedOn:        time.Now().UTC().String(),
 	},
 	&Character{
 		UserID:           2,
@@ -118,7 +111,5 @@ var characterList = []*Character{
 		Ilvl:             1368,
 		GuildName:        "InternsGuild",
 		GuildRole:        "Member",
-		CreatedOn:        time.Now().UTC().String(),
-		UpdatedOn:        time.Now().UTC().String(),
 	},
 }
