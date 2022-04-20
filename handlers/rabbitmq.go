@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strconv"
 
 	"github.com/GuildGram/Character-Service.git/data"
 	"github.com/streadway/amqp"
@@ -58,11 +57,9 @@ func StartMsgBrokerConnection() {
 	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
-			charId, err := strconv.Atoi(string(d.Body))
-			failOnError(err, "Failed to convert body to integer")
-			log.Printf(" [.] CharID(%d)", charId)
 
-			char := *sendCharacterByID(charId)
+			char, err := data.GetCharactersByGuild(string(d.Body))
+			failOnError(err, "did not retrieve characters by guildID")
 			response, err := json.Marshal(char)
 			failOnError(err, "Failed to convert response to json")
 
@@ -83,14 +80,4 @@ func StartMsgBrokerConnection() {
 	}()
 	fmt.Println("Successfully connected to our RabbitMQ instance \n [*] - waiting for messages")
 	<-forever
-}
-
-func sendCharacterByID(id int) *data.Character {
-	b, i, err := data.FindChar(id)
-	if err != nil {
-		fmt.Println(err)
-		panic(err)
-	}
-	_ = i
-	return b
 }
