@@ -10,6 +10,7 @@ import (
 
 	"github.com/GuildGram/Character-Service.git/handlers"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -20,31 +21,38 @@ func main() {
 
 	ch := handlers.NewCharacter(l)
 
-	sm := mux.NewRouter()
+	router := mux.NewRouter()
 
 	//handle get
-	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	getRouter := router.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/characters/getall", ch.GetCharacters)
 
 	//should change to get by name for when user services are implemented
 	getRouter.HandleFunc("/characters/get{id:[0-9]+}", ch.GetCharacter)
 
 	//handle put
-	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/characters/update{id:[0-9]+}", ch.UpdateCharacters)
 
 	//handle add
-	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/characters/add", ch.AddCharacter)
 
 	//handle delete
-	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
+	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc("/characters/delete{id:[0-9]+}", ch.DeleteCharacter)
 
-	//Server stuff for testing, will be deleted soon
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(router)
+
+	//Server stuff
 	s := &http.Server{
 		Addr:         ":9090",
-		Handler:      sm,
+		Handler:      handler,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,

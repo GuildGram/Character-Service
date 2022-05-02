@@ -10,12 +10,12 @@ type Character struct {
 	UserID           int    `json:"userid"`
 	Class            string `json:"class"`
 	CharaterName     string `json:"name"`
-	RegionServerName string `json:"region-server"`
+	RegionServerName string `json:"regionserver"`
 	CharacterLevel   int    `json:"characterlevel"`
-	RosterLevel      int    `json:"rosterLevel"`
+	RosterLevel      int    `json:"rosterevel"`
 	Ilvl             int    `json:"ilvl"`
 	GuildID          string `json:"guildid"`
-	GuildRole        string `json:"guildRole"`
+	GuildRole        string `json:"guildrole"`
 }
 
 func (c *Character) FromJSON(r io.Reader) error {
