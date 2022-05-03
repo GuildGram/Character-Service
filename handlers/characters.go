@@ -17,6 +17,12 @@ func NewCharacter(l *log.Logger) *Character {
 	return &Character{l}
 }
 
+func (c *Character) MessageBrokerListen(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	StartMsgBrokerConnection("G" + id)
+}
+
 func (c *Character) UpdateCharacters(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

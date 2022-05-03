@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	go handlers.StartMsgBrokerConnection()
+	// go handlers.StartMsgBrokerConnection()
 
 	//old code
 	l := log.New(os.Stdout, "character-api", log.LstdFlags)
@@ -41,6 +41,10 @@ func main() {
 	//handle delete
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc("/characters/delete{id:[0-9]+}", ch.DeleteCharacter)
+
+	//handle open rabbit mq listener
+	msgBrokerRouter := router.Methods(http.MethodGet).Subrouter()
+	msgBrokerRouter.HandleFunc("/characters/msg{id:[0-9]+}", ch.MessageBrokerListen)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
