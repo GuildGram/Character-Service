@@ -21,6 +21,7 @@ func (c *Character) MessageBrokerListen(rw http.ResponseWriter, r *http.Request)
 	vars := mux.Vars(r)
 	id := vars["id"]
 	StartMsgBrokerConnection("G" + id)
+	c.l.Print("HANDLE SEND CHARS TO GUILD ROSTER")
 }
 
 func (c *Character) UpdateCharacters(rw http.ResponseWriter, r *http.Request) {
