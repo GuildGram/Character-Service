@@ -17,11 +17,32 @@ func NewCharacter(l *log.Logger) *Character {
 	return &Character{l}
 }
 
-func (c *Character) MessageBrokerListen(rw http.ResponseWriter, r *http.Request) {
+func (c *Character) SendCharactersMessageBroker(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	StartMsgBrokerConnection("G" + id)
+	SendCharsByGID("G" + id)
 	c.l.Print("HANDLE SEND CHARS TO GUILD ROSTER")
+}
+
+func (c *Character) UpdateCharacterGuild(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
+		return
+	}
+
+	var g data.GuildData
+	g.FromJSON(r.Body)
+
+	char, err := data.GetCharacter(id)
+	if err != nil {
+		http.Error(rw, "Unable to find char with that ID", http.StatusBadRequest)
+		return
+	}
+
+	char.GuildID = "G" + g.GuildID
+	char.GuildRole = g.GuildRole
 }
 
 func (c *Character) UpdateCharacters(rw http.ResponseWriter, r *http.Request) {

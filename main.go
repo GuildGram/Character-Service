@@ -33,6 +33,7 @@ func main() {
 	//handle put
 	putRouter := router.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/characters/update{id:[0-9]+}", ch.UpdateCharacters)
+	putRouter.HandleFunc("/characters/updateguild{id:[0-9]+}", ch.UpdateCharacterGuild)
 
 	//handle add
 	postRouter := router.Methods(http.MethodPost).Subrouter()
@@ -44,11 +45,12 @@ func main() {
 
 	//handle open rabbit mq listener
 	msgBrokerRouter := router.Methods(http.MethodGet).Subrouter()
-	msgBrokerRouter.HandleFunc("/characters/msg{id:[0-9]+}", ch.MessageBrokerListen)
+	msgBrokerRouter.HandleFunc("/characters/msg{id:[0-9]+}", ch.SendCharactersMessageBroker)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
 		AllowCredentials: true,
+		AllowedMethods:   []string{"POST", "DELETE", "GET", "PUT"},
 	})
 
 	handler := c.Handler(router)

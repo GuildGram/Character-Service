@@ -6,6 +6,11 @@ import (
 	"io"
 )
 
+type GuildData struct {
+	GuildID   string `json:"guildid"`
+	GuildRole string `json:"guildrole"`
+}
+
 type Character struct {
 	UserID           int    `json:"userid"`
 	Class            string `json:"class"`
@@ -19,6 +24,11 @@ type Character struct {
 }
 
 func (c *Character) FromJSON(r io.Reader) error {
+	e := json.NewDecoder(r)
+	return e.Decode(c)
+}
+
+func (c *GuildData) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
 	return e.Decode(c)
 }
@@ -37,6 +47,16 @@ func (c *Character) ToJSON(w io.Writer) error {
 
 func GetCharacters() Characters {
 	return characterList
+}
+
+func UpdateCharacterGuild(id int, gId string, role string) error {
+	char, _, err := findChar(id)
+	if err != nil {
+		return err
+	}
+	char.GuildID = gId
+	char.GuildRole = role
+	return err
 }
 
 func UpdateCharacter(id int, c *Character) error {
@@ -123,7 +143,7 @@ var characterList = []*Character{
 		RosterLevel:      60,
 		Ilvl:             1368,
 		GuildID:          "G2",
-		GuildRole:        "Member",
+		GuildRole:        "Owner",
 	},
 	{
 		UserID:           3,
