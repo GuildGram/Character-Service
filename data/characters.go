@@ -12,7 +12,7 @@ type GuildData struct {
 }
 
 type Character struct {
-	UserID           int    `json:"userid"`
+	UserID           string `json:"userid"`
 	Class            string `json:"class"`
 	CharaterName     string `json:"name"`
 	RegionServerName string `json:"regionserver"`
@@ -49,7 +49,7 @@ func GetCharacters() Characters {
 	return characterList
 }
 
-func UpdateCharacterGuild(id int, gId string, role string) error {
+func UpdateCharacterGuild(id string, gId string, role string) error {
 	char, _, err := findChar(id)
 	if err != nil {
 		return err
@@ -59,7 +59,7 @@ func UpdateCharacterGuild(id int, gId string, role string) error {
 	return err
 }
 
-func UpdateCharacter(id int, c *Character) error {
+func UpdateCharacter(id string, c *Character) error {
 	_, pos, err := findChar(id)
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func UpdateCharacter(id int, c *Character) error {
 
 var ErrCharNotFound = fmt.Errorf("char Not found")
 
-func findChar(id int) (*Character, int, error) {
+func findChar(id string) (*Character, int, error) {
 	for i, c := range characterList {
 		if c.UserID == id {
 			return c, i, nil
@@ -82,15 +82,10 @@ func findChar(id int) (*Character, int, error) {
 }
 
 func AddCharacter(c *Character) {
-	c.UserID = GetNextID()
 	characterList = append(characterList, c)
 }
 
-func GetNextID() int {
-	return characterList[len(characterList)-1].UserID + 1
-}
-
-func DeleteCharacter(id int) error {
+func DeleteCharacter(id string) error {
 	_, pos, err := findChar(id)
 	if err != nil {
 		return err
@@ -101,7 +96,7 @@ func DeleteCharacter(id int) error {
 	return err
 }
 
-func GetCharacter(id int) (*Character, error) {
+func GetCharacter(id string) (*Character, error) {
 	_, pos, err := findChar(id)
 	if err != nil {
 		return nil, err
@@ -124,7 +119,7 @@ func GetCharactersByGuild(id string) ([]*Character, error) {
 
 var characterList = []*Character{
 	{
-		UserID:           1,
+		UserID:           "1",
 		CharaterName:     "Nemoi",
 		Class:            "Striker",
 		RegionServerName: "EUC-Sceptrum",
@@ -135,7 +130,7 @@ var characterList = []*Character{
 		GuildRole:        "Owner",
 	},
 	{
-		UserID:           2,
+		UserID:           "2",
 		CharaterName:     "Mjc",
 		Class:            "Berserk",
 		RegionServerName: "EUC-Sceptrum",
@@ -146,7 +141,7 @@ var characterList = []*Character{
 		GuildRole:        "Owner",
 	},
 	{
-		UserID:           3,
+		UserID:           "3",
 		CharaterName:     "Leopewpew",
 		Class:            "Archer",
 		RegionServerName: "EUC-Sceptrum",

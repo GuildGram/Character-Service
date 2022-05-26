@@ -3,7 +3,6 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/GuildGram/Character-Service.git/data"
 	"github.com/gorilla/mux"
@@ -26,11 +25,7 @@ func (c *Character) SendCharactersMessageBroker(rw http.ResponseWriter, r *http.
 
 func (c *Character) UpdateCharacterGuild(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
-		return
-	}
+	id := vars["id"]
 
 	var g data.GuildData
 	g.FromJSON(r.Body)
@@ -47,16 +42,12 @@ func (c *Character) UpdateCharacterGuild(rw http.ResponseWriter, r *http.Request
 
 func (c *Character) UpdateCharacters(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
-		return
-	}
+	id := vars["id"]
 
 	c.l.Println("HANDLE PUT CHARACTER", id)
 
 	char := &data.Character{}
-	err = char.FromJSON(r.Body)
+	err := char.FromJSON(r.Body)
 	if err != nil {
 		http.Error(rw, "Unable to unmarshal json", http.StatusBadRequest)
 	}
@@ -93,15 +84,11 @@ func (c *Character) AddCharacter(rw http.ResponseWriter, r *http.Request) {
 
 func (c *Character) DeleteCharacter(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
-		return
-	}
+	id := vars["id"]
 
 	c.l.Println("HANDLE DELETE CHARACTER", id)
 
-	err = data.DeleteCharacter(id)
+	err := data.DeleteCharacter(id)
 	if err != nil {
 		http.Error(rw, "Char not found", http.StatusInternalServerError)
 	}
@@ -109,11 +96,7 @@ func (c *Character) DeleteCharacter(rw http.ResponseWriter, r *http.Request) {
 
 func (c *Character) GetCharacter(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(rw, "Unable to convert ID", http.StatusBadRequest)
-		return
-	}
+	id := vars["id"]
 
 	c.l.Println("HANDLE GET 1 CHARACTER", id)
 

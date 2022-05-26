@@ -35,7 +35,7 @@ func main() {
 	putRouter.HandleFunc("/characters/update{id:[0-9]+}", ch.UpdateCharacters)
 	putRouter.HandleFunc("/characters/updateguild{id:[0-9]+}", ch.UpdateCharacterGuild)
 
-	//handle add
+	//handle Post
 	postRouter := router.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/characters/add", ch.AddCharacter)
 
