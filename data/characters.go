@@ -6,19 +6,29 @@ import (
 	"io"
 )
 
+type GuildData struct {
+	GuildID   string `json:"guildid"`
+	GuildRole string `json:"guildrole"`
+}
+
 type Character struct {
 	UserID           int    `json:"userid"`
 	Class            string `json:"class"`
 	CharaterName     string `json:"name"`
-	RegionServerName string `json:"region-server"`
+	RegionServerName string `json:"regionserver"`
 	CharacterLevel   int    `json:"characterlevel"`
-	RosterLevel      int    `json:"rosterLevel"`
+	RosterLevel      int    `json:"rosterevel"`
 	Ilvl             int    `json:"ilvl"`
-	GuildName        string `json:"guildName"`
-	GuildRole        string `json:"guildRole"`
+	GuildID          string `json:"guildid"`
+	GuildRole        string `json:"guildrole"`
 }
 
 func (c *Character) FromJSON(r io.Reader) error {
+	e := json.NewDecoder(r)
+	return e.Decode(c)
+}
+
+func (c *GuildData) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
 	return e.Decode(c)
 }
@@ -39,8 +49,18 @@ func GetCharacters() Characters {
 	return characterList
 }
 
+func UpdateCharacterGuild(id int, gId string, role string) error {
+	char, _, err := findChar(id)
+	if err != nil {
+		return err
+	}
+	char.GuildID = gId
+	char.GuildRole = role
+	return err
+}
+
 func UpdateCharacter(id int, c *Character) error {
-	_, pos, err := FindChar(id)
+	_, pos, err := findChar(id)
 	if err != nil {
 		return err
 	}
@@ -50,9 +70,9 @@ func UpdateCharacter(id int, c *Character) error {
 	return err
 }
 
-var ErrCharNotFound = fmt.Errorf("Char Not found")
+var ErrCharNotFound = fmt.Errorf("char Not found")
 
-func FindChar(id int) (*Character, int, error) {
+func findChar(id int) (*Character, int, error) {
 	for i, c := range characterList {
 		if c.UserID == id {
 			return c, i, nil
@@ -71,7 +91,7 @@ func GetNextID() int {
 }
 
 func DeleteCharacter(id int) error {
-	_, pos, err := FindChar(id)
+	_, pos, err := findChar(id)
 	if err != nil {
 		return err
 	}
@@ -82,15 +102,28 @@ func DeleteCharacter(id int) error {
 }
 
 func GetCharacter(id int) (*Character, error) {
-	_, pos, err := FindChar(id)
+	_, pos, err := findChar(id)
 	if err != nil {
 		return nil, err
 	}
 	return characterList[pos], err
 }
 
+func GetCharactersByGuild(id string) ([]*Character, error) {
+	var cList []*Character
+	for _, c := range characterList {
+		if c.GuildID == id {
+			cList = append(cList, c)
+		}
+	}
+	if cList != nil {
+		return cList, nil
+	}
+	return nil, ErrCharNotFound
+}
+
 var characterList = []*Character{
-	&Character{
+	{
 		UserID:           1,
 		CharaterName:     "Nemoi",
 		Class:            "Striker",
@@ -98,10 +131,10 @@ var characterList = []*Character{
 		CharacterLevel:   53,
 		RosterLevel:      68,
 		Ilvl:             1355,
-		GuildName:        "FontysICT",
+		GuildID:          "G1",
 		GuildRole:        "Owner",
 	},
-	&Character{
+	{
 		UserID:           2,
 		CharaterName:     "Mjc",
 		Class:            "Berserk",
@@ -109,7 +142,18 @@ var characterList = []*Character{
 		CharacterLevel:   53,
 		RosterLevel:      60,
 		Ilvl:             1368,
-		GuildName:        "InternsGuild",
+		GuildID:          "G2",
+		GuildRole:        "Owner",
+	},
+	{
+		UserID:           3,
+		CharaterName:     "Leopewpew",
+		Class:            "Archer",
+		RegionServerName: "EUC-Sceptrum",
+		CharacterLevel:   53,
+		RosterLevel:      60,
+		Ilvl:             1368,
+		GuildID:          "G1",
 		GuildRole:        "Member",
 	},
 }
