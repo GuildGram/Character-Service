@@ -16,9 +16,9 @@ type Character struct {
 	Class            string `json:"class"`
 	CharaterName     string `json:"name"`
 	RegionServerName string `json:"regionserver"`
-	CharacterLevel   int    `json:"characterlevel"`
-	RosterLevel      int    `json:"rosterevel"`
-	Ilvl             int    `json:"ilvl"`
+	CharacterLevel   string `json:"characterlevel"`
+	RosterLevel      string `json:"rosterlevel"`
+	Ilvl             string `json:"ilvl"`
 	GuildID          string `json:"guildid"`
 	GuildRole        string `json:"guildrole"`
 }
@@ -123,9 +123,9 @@ var characterList = []*Character{
 		CharaterName:     "Nemoi",
 		Class:            "Striker",
 		RegionServerName: "EUC-Sceptrum",
-		CharacterLevel:   53,
-		RosterLevel:      68,
-		Ilvl:             1355,
+		CharacterLevel:   "53",
+		RosterLevel:      "68",
+		Ilvl:             "1355",
 		GuildID:          "G1",
 		GuildRole:        "Owner",
 	},
@@ -134,21 +134,10 @@ var characterList = []*Character{
 		CharaterName:     "Mjc",
 		Class:            "Berserk",
 		RegionServerName: "EUC-Sceptrum",
-		CharacterLevel:   53,
-		RosterLevel:      60,
-		Ilvl:             1368,
+		CharacterLevel:   "53",
+		RosterLevel:      "60",
+		Ilvl:             "1368",
 		GuildID:          "G2",
 		GuildRole:        "Owner",
-	},
-	{
-		UserID:           "3",
-		CharaterName:     "Leopewpew",
-		Class:            "Archer",
-		RegionServerName: "EUC-Sceptrum",
-		CharacterLevel:   53,
-		RosterLevel:      60,
-		Ilvl:             1368,
-		GuildID:          "G1",
-		GuildRole:        "Member",
 	},
 }
