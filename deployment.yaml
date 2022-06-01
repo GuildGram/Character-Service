@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: character-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: character-svc
+  template:
+    metadata:
+      labels:
+        name: character-svc
+    spec:
+      containers:
+      - name: application
+        image: 425409/characterservice:main
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 9090
