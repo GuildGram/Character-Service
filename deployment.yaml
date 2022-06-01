@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: character-svc
+  name: character-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: character-svc
+      name: character
   template:
     metadata:
       labels:
-        name: character-svc
+        name: character
     spec:
       containers:
-      - name: application
+      - name: character
         image: 425409/characterservice:main
         imagePullPolicy: IfNotPresent
         ports:
