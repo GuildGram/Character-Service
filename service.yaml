@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: character-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 90
+    targetPort: 9090
+  selector:
+    name: go-web-app
