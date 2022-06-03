@@ -6,15 +6,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: character
+      app: character
   template:
     metadata:
       labels:
-        name: character
+        app: character
     spec:
       containers:
-      - name: character
-        image: 425409/characterservice:main
-        imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 9090
+        - name: character
+          image: 425409/characterservice:main
