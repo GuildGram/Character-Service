@@ -45,7 +45,7 @@ jobs:
       run: docker push registry.digitalocean.com/guildgramcr/characterservice:$(echo $GITHUB_SHA | head -c7)
 
     - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/guildgramcr/characterservice:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yaml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/guildgramcr/characterservice:'${TAG}'|' $GITHUB_WORKSPACE/deployment.yaml
 
     - name: Save DigitalOcean kubeconfig with short-lived credentials
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 d6a318e2-d6b0-4d56-84d3-b3bbf511b761
