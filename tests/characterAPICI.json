@@ -57,8 +57,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 201\", function(){\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -70,7 +70,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"class\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"name\":\"joe\",\r\n    \"regionserver\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"characterlevel\": 123,\r\n    \"rosterlevel\": 12,\r\n    \"ilvl\": 1,\r\n    \"guildid\": \"G2\",\r\n    \"guildrole\": \"Owner\"\r\n}",
+							"raw": "{\r\n    \"class\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"name\":\"joe\",\r\n    \"regionserver\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"characterlevel\": \"123\",\r\n    \"rosterlevel\": \"12\",\r\n    \"ilvl\": \"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "text"
