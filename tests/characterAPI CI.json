@@ -39,9 +39,9 @@
 							"raw": "http://localhost:9090/characters/getall",
 							"protocol": "http",
 							"host": [
-								"guildgram",
-								"com"
+								"localhost"
 							],
+							"port": "9090",
 							"path": [
 								"characters",
 								"getall"
