@@ -4,9 +4,9 @@ name: CI - API Test
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, Development ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, Development ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,7 +32,7 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
 
-    -name: Verify Dependencies
+    - name: Verify Dependencies
       run: go mod verify
 
     - name: Install Newman dependency
