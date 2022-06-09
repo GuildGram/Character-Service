@@ -1,0 +1,33 @@
+{
+	"id": "4e65fb83-4b98-4c6a-be11-98f16b022c2a",
+	"name": "API",
+	"values": [
+		{
+			"key": "FLASK_ENV",
+			"value": "development",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "API_HOST",
+			"value": "0.0.0.0",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "FLASK_APP",
+			"value": "main.go",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "CI",
+			"value": "true",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2022-06-09T14:15:39.233Z",
+	"_postman_exported_using": "Postman/9.20.3"
+}

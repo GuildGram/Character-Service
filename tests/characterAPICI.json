@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "80242ba0-25a1-4309-8fbd-2a3a2c818929",
+		"name": "Postman CI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11613428"
+	},
+	"item": [
+		{
+			"name": "Characters",
+			"item": [
+				{
+					"name": "getall",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is text \", function(){\r",
+									"    pm.response.to.be.header(\"Content-Type\", \"text/plain; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 1000ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://guildgram.com/characters/getall",
+							"protocol": "http",
+							"host": [
+								"guildgram",
+								"com"
+							],
+							"path": [
+								"characters",
+								"getall"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add char",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"class\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"name\":\"joe\",\r\n    \"regionserver\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"characterlevel\": 123,\r\n    \"rosterlevel\": 12,\r\n    \"ilvl\": 1,\r\n    \"guildid\": \"G2\",\r\n    \"guildrole\": \"Owner\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/characters/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"characters",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
