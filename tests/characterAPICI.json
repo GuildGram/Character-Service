@@ -36,7 +36,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://guildgram.com/characters/getall",
+							"raw": "http://localhost:9090/characters/getall",
 							"protocol": "http",
 							"host": [
 								"guildgram",
