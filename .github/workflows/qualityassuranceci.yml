@@ -43,7 +43,6 @@ jobs:
         go run main.go &
         sleep 2
         cd tests/ && ./node_modules/newman/bin/newman.js run characterAPICI.json -e environment.json
-        kill -9 `lsof -i:5000 -t`
       env:
         FLASK_ENV: development
         API_HOST: 0.0.0.0
